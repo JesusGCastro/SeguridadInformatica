@@ -38,13 +38,14 @@ function registrarUsuario(nombre, email, contraseña) {
         });
 }
 
-document.querySelector('.form-container.sign-up button').addEventListener('click', function(event) {
-    event.preventDefault(); // Evitar el comportamiento predeterminado del botón
+// Evento para manejar el envío del formulario de registro
+document.querySelector('.form-container.sign-up form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Evitar el envío del formulario
 
     // Obtener los valores del formulario
-    const nombre = this.closest('form').querySelector('input[name="nombre"]').value;
-    const email = this.closest('form').querySelector('input[name="email"]').value;
-    const contraseña = this.closest('form').querySelector('input[name="contraseña"]').value;
+    const nombre = this.querySelector('input[name="nombre"]').value;
+    const email = this.querySelector('input[name="email"]').value;
+    const contraseña = this.querySelector('input[name="contraseña"]').value;
 
     // Llamar a la función para registrar el usuario en la base de datos
     registrarUsuario(nombre, email, contraseña);
