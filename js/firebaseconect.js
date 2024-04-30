@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,19 +20,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app); 
 
+// Confirmamos la conexión
 console.log("Se realizo la conexión de forma exitosa!");
 
-const formulario = document.getElementById("formulario-registro");
+// Agregamos los formularios como constantes uwu
+const formularioRegistro = document.getElementById("formulario-registro");
+const formularioInicio = document.getElementById("formulario-inicio");
+
+
 const inputNombre = document.getElementById("nombre");
 const inputEmail = document.getElementById("email");
 const inputPassword = document.getElementById("contrasenia");
 
-formulario.addEventListener("submit", async function (event) {
+formularioRegistro.addEventListener("submit", async function (event) {
   event.preventDefault();
 
   const nombre = inputNombre.value;
   const email = inputEmail.value;
-  console.log(inputPassword.value);
   const contrasenia = inputPassword.value;
 
   try {
@@ -41,7 +45,36 @@ formulario.addEventListener("submit", async function (event) {
       email: email,
       contrasenia: contrasenia
     });
+
+    inputNombre.value= "";
+    inputEmail.value= "";
+    inputPassword.value= "";
+
   } catch (error) {
     console.error("Error al agregar datos", error);
   }
+});
+
+const inputEmail2 = document.getElementById("email2");
+const inputPassword2 = document.getElementById("contrasenia2");
+
+formularioInicio.addEventListener("submit", async function (event){
+    event.preventDefault();
+
+    const email = inputEmail2.value;
+    const contrasenia = inputPassword2.value;
+    
+   
+        // Se crea una instancia de la coleccion usuarios
+        const usuarios = collection(firestore, "usuarios");
+
+        const q = await getDocs(query(usuarios, where("email", "==", email), where("contrasenia", "==", contrasenia)));
+    
+        if (!q.empty) {
+            console.log("Inicio de sesión exitoso!")
+            window.location.href = "encriptacion.html";
+        } else{
+            console.log("Error: Credenciales incorrectas")
+        }
+    
 });
