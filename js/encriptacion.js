@@ -1,7 +1,20 @@
-/*!
-* Start Bootstrap - Business Frontpage v5.0.9 (https://startbootstrap.com/template/business-frontpage)
-* Copyright 2013-2023 Start Bootstrap
-* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-business-frontpage/blob/master/LICENSE)
-*/
-// This file is intentionally blank
-// Use this file to add JavaScript to your project
+import CryptoJS from 'crypto-js';
+
+const key = "CTBroRealmenteEstaEsLaClaveMontana";
+
+function encriptar(mensaje) {
+    const texto_cifrado = CryptoJS.DES.encrypt(mensaje, key, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7 
+    });
+    return texto_cifrado.toString(); // Convertir a cadena legible
+}
+
+function desencriptar(mensaje){
+    const texto_descifrado = CryptoJS.DES.decrypt(mensaje, key, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7 });
+
+    return texto_descifrado.toString(); // Convertir a cadena legible
+}
+
