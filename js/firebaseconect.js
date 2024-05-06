@@ -39,7 +39,6 @@ loginBtn.addEventListener('click', () => {
 const formularioRegistro = document.getElementById("formulario-registro");
 const formularioInicio = document.getElementById("formulario-inicio");
 
-
 const inputNombre = document.getElementById("nombre");
 const inputEmail = document.getElementById("email");
 const inputPassword = document.getElementById("contrasenia");
@@ -47,9 +46,15 @@ const inputPassword = document.getElementById("contrasenia");
 formularioRegistro.addEventListener("submit", async function (event) {
   event.preventDefault();
 
-  const nombre = inputNombre.value;
-  const email = inputEmail.value;
-  const contrasenia = inputPassword.value;
+  const nombre = inputNombre.value.trim(); // Eliminar espacios en blanco al inicio y al final
+  const email = inputEmail.value.trim(); // Eliminar espacios en blanco al inicio y al final
+  const contrasenia = inputPassword.value.trim(); // Eliminar espacios en blanco al inicio y al final
+
+  // Verificar que ningún campo esté vacío
+  if (nombre === "" || email === "" || contrasenia === "") {
+    console.log("Error: Todos los campos son obligatorios");
+    return; // Detener la ejecución si hay campos vacíos
+  }
 
   // Definir la key para cifrar
   const key = "CTBroRealmenteEstaEsLaClaveMontana";
