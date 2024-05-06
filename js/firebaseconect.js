@@ -23,6 +23,18 @@ const firestore = getFirestore(app);
 // Confirmamos la conexión
 console.log("Se realizo la conexión de forma exitosa!");
 
+const container = document.getElementById('container');
+const registerBtn = document.getElementById('register');
+const loginBtn = document.getElementById('login');
+
+registerBtn.addEventListener('click', () => {
+    container.classList.add("active");
+});
+
+loginBtn.addEventListener('click', () => {
+    container.classList.remove("active");
+});
+
 // Agregamos los formularios como constantes uwu
 const formularioRegistro = document.getElementById("formulario-registro");
 const formularioInicio = document.getElementById("formulario-inicio");
