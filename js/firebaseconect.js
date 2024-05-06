@@ -51,11 +51,21 @@ formularioRegistro.addEventListener("submit", async function (event) {
   const email = inputEmail.value;
   const contrasenia = inputPassword.value;
 
+  // Definir la key para cifrar
+  const key = "CTBroRealmenteEstaEsLaClaveMontana";
+
+  // Cifra el mensaje usando CryptoJS
+  const contraseniaE = CryptoJS.DES.encrypt(contrasenia,key,{
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7
+  }).toString();
+
+
   try {
     await addDoc(collection(firestore, "usuarios"), {
       nombre: nombre,
       email: email,
-      contrasenia: contrasenia
+      contrasenia: contraseniaE
     });
 
     inputNombre.value= "";
@@ -71,22 +81,45 @@ const inputEmail2 = document.getElementById("email2");
 const inputPassword2 = document.getElementById("contrasenia2");
 
 formularioInicio.addEventListener("submit", async function (event){
-    event.preventDefault();
+  event.preventDefault();
 
-    const email = inputEmail2.value;
-    const contrasenia = inputPassword2.value;
-    
-   
-        // Se crea una instancia de la coleccion usuarios
-        const usuarios = collection(firestore, "usuarios");
+  const email = inputEmail2.value;
+  const contrasenia = inputPassword2.value;
 
-        const q = await getDocs(query(usuarios, where("email", "==", email), where("contrasenia", "==", contrasenia)));
-    
-        if (!q.empty) {
-            console.log("Inicio de sesión exitoso!")
-            window.location.href = "encriptacion.html";
-        } else{
-            console.log("Error: Credenciales incorrectas")
-        }
-    
+  // Definir la key para cifrar
+  const key = "CTBroRealmenteEstaEsLaClaveMontana";
+
+  // Se crea una instancia de la colección "usuarios"
+  const usuarios = collection(firestore, "usuarios");
+
+  // Realizar una consulta para encontrar el usuario con el correo electrónico proporcionado
+  const q = await getDocs(query(usuarios, where("email", "==", email)));
+
+  if (!q.empty) {
+      // Obtiene la primera coincidencia de usuario (asumiendo que los correos electrónicos son únicos)
+      const usuario = q.docs[0].data();
+      // Extrae la contraseña cifrada del usuario recuperado de la base de datos
+      const contraseniaGuardada = usuario.contrasenia;
+
+      // Definir la key para descifrar
+      const key = "CTBroRealmenteEstaEsLaClaveMontana";
+
+      // Cifra el mensaje usando CryptoJS
+      const contraseniaD = CryptoJS.DES.decrypt(contraseniaGuardada,key,{
+          mode: CryptoJS.mode.ECB,
+          padding: CryptoJS.pad.Pkcs7
+      });
+
+      console.log(contraseniaD);
+
+      // Compara las contraseñas cifradas
+      if (contrasenia === contraseniaD.toString(CryptoJS.enc.Utf8)) {
+          console.log("Inicio de sesión exitoso!");
+          window.location.href = "encriptacion.html";
+      } else {
+          console.log("Error: Credenciales incorrectas");
+      }
+  } else {
+      console.log("Error: Usuario no encontrado");
+  }
 });
