@@ -208,3 +208,22 @@ body{
 .container.active .toggle-right{
     transform: translateX(200%);
 }
+
+#error-container {
+    color: red;
+    /* Color del texto */
+    background-color: #f8d7da;
+    /* Color de fondo */
+    padding: 10px;
+    /* Añadir espacio alrededor del texto */
+    border: 1px solid #f5c6cb;
+    /* Agregar un borde */
+    border-radius: 5px;
+    /* Añadir bordes redondeados */
+    margin-bottom: 10px;
+    /* Espacio inferior */
+    margin-top: 10px;
+    /* Espacio superior */
+    display: none;
+    /* Ocultar el contenedor de errores inicialmente */
+}

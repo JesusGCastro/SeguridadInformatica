@@ -23,6 +23,13 @@ const firestore = getFirestore(app);
 // Confirmamos la conexión
 console.log("Se realizo la conexión de forma exitosa!");
 
+// Función para mostrar errores en la página
+function mostrarError(mensaje) {
+  const errorContainer = document.getElementById('error-container');
+  errorContainer.innerHTML = `<p>${mensaje}</p>`;
+  errorContainer.style.display = 'block'; // Mostrar el contenedor de errores
+}
+
 const container = document.getElementById('container');
 const registerBtn = document.getElementById('register');
 const loginBtn = document.getElementById('login');
@@ -49,9 +56,9 @@ formularioRegistro.addEventListener("submit", async function (event) {
   //CAPTCHA
   const captchaResponse = grecaptcha.getResponse();
   if (!captchaResponse > 0) {
-      throw new Error("Es necesario realizar el Captcha para continuar.");
+    mostrarError("**Es necesario realizar el Captcha para continuar.**");
+    throw new Error("Es necesario realizar el Captcha para continuar.");
   }
-
 
   const nombre = inputNombre.value.trim(); // Eliminar espacios en blanco al inicio y al final
   const email = inputEmail.value.trim(); // Eliminar espacios en blanco al inicio y al final
@@ -59,7 +66,7 @@ formularioRegistro.addEventListener("submit", async function (event) {
 
   // Verificar que ningún campo esté vacío
   if (nombre === "" || email === "" || contrasenia === "") {
-    console.log("Error: Todos los campos son obligatorios");
+    mostrarError("**Todos los campos deben estar llenos**");
     return; // Detener la ejecución si hay campos vacíos
   }
 
@@ -85,7 +92,7 @@ formularioRegistro.addEventListener("submit", async function (event) {
     inputPassword.value= "";
 
   } catch (error) {
-    console.error("Error al agregar datos", error);
+    mostrarError("**Error al registrar datos: " + error.message+"**");
   }
 });
 
@@ -98,12 +105,19 @@ formularioInicio.addEventListener("submit", async function (event){
   //CAPTCHA
   const captchaResponse = grecaptcha.getResponse();
   if (!captchaResponse > 0) {
-      throw new Error("Es necesario realizar el Captcha para continuar.");
+    mostrarError("**Es necesario realizar el Captcha para continuar.**");
+    throw new Error("Es necesario realizar el Captcha para continuar.");
   }
 
 
   const email = inputEmail2.value;
   const contrasenia = inputPassword2.value;
+
+  // Verificar que ningún campo esté vacío
+  if (email == "" || contrasenia == "") {
+    mostrarError("**Todos los campos deben estar llenos**");
+    return; // Detener la ejecución si hay campos vacíos
+  }
 
   // Definir la key para cifrar
   const key = "CTBroRealmenteEstaEsLaClaveMontana";
@@ -136,9 +150,9 @@ formularioInicio.addEventListener("submit", async function (event){
           console.log("Inicio de sesión exitoso!");
           window.location.href = "encriptacion.html";
       } else {
-          console.log("Error: Credenciales incorrectas");
+        mostrarError("**Correo o contraseña incorrecta**");
       }
   } else {
-      console.log("Error: Usuario no encontrado");
+    mostrarError("**Error al iniciar sesion: " + error.message+"**");
   }
 });
