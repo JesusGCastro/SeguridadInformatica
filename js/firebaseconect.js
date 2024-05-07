@@ -18,7 +18,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const firestore = getFirestore(app);
+const firestore = getFirestore(app); 
 
 // Confirmamos la conexión
 console.log("Se realizo la conexión de forma exitosa!");
@@ -35,11 +35,11 @@ const registerBtn = document.getElementById('register');
 const loginBtn = document.getElementById('login');
 
 registerBtn.addEventListener('click', () => {
-  container.classList.add("active");
+    container.classList.add("active");
 });
 
 loginBtn.addEventListener('click', () => {
-  container.classList.remove("active");
+    container.classList.remove("active");
 });
 
 // Agregamos los formularios como constantes uwu
@@ -50,19 +50,14 @@ const inputNombre = document.getElementById("nombre");
 const inputEmail = document.getElementById("email");
 const inputPassword = document.getElementById("contrasenia");
 
-// Variable global para almacenar el estado del Captcha
-let captchaValidado = false;
-
 formularioRegistro.addEventListener("submit", async function (event) {
   event.preventDefault();
 
-  // Verificar el Captcha si aún no se ha validado
-  if (!captchaValidado) {
-    const captchaResponse = grecaptcha.getResponse();
-    if (!captchaResponse > 0) {
-      mostrarError("**Es necesario realizar el Captcha para continuar.**");
-      throw new Error("Es necesario realizar el Captcha para continuar.");
-    } captchaValidado = true; // Actualizar el estado del Captcha
+  //CAPTCHA
+  const captchaResponse = grecaptcha.getResponse();
+  if (!captchaResponse > 0) {
+    mostrarError("**Es necesario realizar el Captcha para continuar.**");
+    throw new Error("Es necesario realizar el Captcha para continuar.");
   }
 
   const nombre = inputNombre.value.trim(); // Eliminar espacios en blanco al inicio y al final
@@ -79,9 +74,9 @@ formularioRegistro.addEventListener("submit", async function (event) {
   const key = "CTBroRealmenteEstaEsLaClaveMontana";
 
   // Cifra el mensaje usando CryptoJS
-  const contraseniaE = CryptoJS.DES.encrypt(contrasenia, key, {
-    mode: CryptoJS.mode.ECB,
-    padding: CryptoJS.pad.Pkcs7
+  const contraseniaE = CryptoJS.DES.encrypt(contrasenia,key,{
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7
   }).toString();
 
 
@@ -92,29 +87,28 @@ formularioRegistro.addEventListener("submit", async function (event) {
       contrasenia: contraseniaE
     });
 
-    inputNombre.value = "";
-    inputEmail.value = "";
-    inputPassword.value = "";
+    inputNombre.value= "";
+    inputEmail.value= "";
+    inputPassword.value= "";
 
   } catch (error) {
-    mostrarError("**Error al registrar datos: " + error.message + "**");
+    mostrarError("**Error al registrar datos: " + error.message+"**");
   }
 });
 
 const inputEmail2 = document.getElementById("email2");
 const inputPassword2 = document.getElementById("contrasenia2");
 
-formularioInicio.addEventListener("submit", async function (event) {
+formularioInicio.addEventListener("submit", async function (event){
   event.preventDefault();
 
-  // Verificar el Captcha si aún no se ha validado
-  if (!captchaValidado) {
-    const captchaResponse = grecaptcha.getResponse();
-    if (!captchaResponse > 0) {
-      mostrarError("**Es necesario realizar el Captcha para continuar.**");
-      throw new Error("Es necesario realizar el Captcha para continuar.");
-    } captchaValidado = true; // Actualizar el estado del Captcha
+  //CAPTCHA
+  const captchaResponse = grecaptcha.getResponse();
+  if (!captchaResponse > 0) {
+    mostrarError("**Es necesario realizar el Captcha para continuar.**");
+    throw new Error("Es necesario realizar el Captcha para continuar.");
   }
+
 
   const email = inputEmail2.value;
   const contrasenia = inputPassword2.value;
@@ -135,30 +129,30 @@ formularioInicio.addEventListener("submit", async function (event) {
   const q = await getDocs(query(usuarios, where("email", "==", email)));
 
   if (!q.empty) {
-    // Obtiene la primera coincidencia de usuario (asumiendo que los correos electrónicos son únicos)
-    const usuario = q.docs[0].data();
-    // Extrae la contraseña cifrada del usuario recuperado de la base de datos
-    const contraseniaGuardada = usuario.contrasenia;
+      // Obtiene la primera coincidencia de usuario (asumiendo que los correos electrónicos son únicos)
+      const usuario = q.docs[0].data();
+      // Extrae la contraseña cifrada del usuario recuperado de la base de datos
+      const contraseniaGuardada = usuario.contrasenia;
 
-    // Definir la key para descifrar
-    const key = "CTBroRealmenteEstaEsLaClaveMontana";
+      // Definir la key para descifrar
+      const key = "CTBroRealmenteEstaEsLaClaveMontana";
 
-    // Cifra el mensaje usando CryptoJS
-    const contraseniaD = CryptoJS.DES.decrypt(contraseniaGuardada, key, {
-      mode: CryptoJS.mode.ECB,
-      padding: CryptoJS.pad.Pkcs7
-    });
+      // Cifra el mensaje usando CryptoJS
+      const contraseniaD = CryptoJS.DES.decrypt(contraseniaGuardada,key,{
+          mode: CryptoJS.mode.ECB,
+          padding: CryptoJS.pad.Pkcs7
+      });
 
-    console.log(contraseniaD);
+      console.log(contraseniaD);
 
-    // Compara las contraseñas cifradas
-    if (contrasenia === contraseniaD.toString(CryptoJS.enc.Utf8)) {
-      console.log("Inicio de sesión exitoso!");
-      window.location.href = "encriptacion.html";
-    } else {
-      mostrarError("**Correo o contraseña incorrecta**");
-    }
+      // Compara las contraseñas cifradas
+      if (contrasenia === contraseniaD.toString(CryptoJS.enc.Utf8)) {
+          console.log("Inicio de sesión exitoso!");
+          window.location.href = "encriptacion.html";
+      } else {
+        mostrarError("**Correo o contraseña incorrecta**");
+      }
   } else {
-    mostrarError("**Error al iniciar sesion: " + error.message + "**");
+    mostrarError("**Error al iniciar sesion: " + error.message+"**");
   }
 });
