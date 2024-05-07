@@ -53,13 +53,6 @@ const inputPassword = document.getElementById("contrasenia");
 formularioRegistro.addEventListener("submit", async function (event) {
   event.preventDefault();
 
-  //CAPTCHA
-  const captchaResponse = grecaptcha.getResponse();
-  if (!captchaResponse > 0) {
-    mostrarError("**Es necesario realizar el Captcha para continuar.**");
-    throw new Error("Es necesario realizar el Captcha para continuar.");
-  }
-
   const nombre = inputNombre.value.trim(); // Eliminar espacios en blanco al inicio y al final
   const email = inputEmail.value.trim(); // Eliminar espacios en blanco al inicio y al final
   const contrasenia = inputPassword.value.trim(); // Eliminar espacios en blanco al inicio y al final
