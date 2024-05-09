@@ -42,6 +42,13 @@ loginBtn.addEventListener('click', () => {
     container.classList.remove("active");
 });
 
+
+function iniciarSesion() {
+  // Guarda un indicador de sesión en el almacenamiento local
+  localStorage.setItem("sesionActiva", "true");
+  console.log("Si hay sesion");
+}
+
 // Agregamos los formularios como constantes uwu
 const formularioRegistro = document.getElementById("formulario-registro");
 const formularioInicio = document.getElementById("formulario-inicio");
@@ -94,6 +101,8 @@ const inputPassword2 = document.getElementById("contrasenia2");
 
 formularioInicio.addEventListener("submit", async function (event){
   event.preventDefault();
+
+  iniciarSesion();
 
   //CAPTCHA
   const captchaResponse = grecaptcha.getResponse();

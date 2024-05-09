@@ -13,6 +13,7 @@
     </head>
     <body>
         <header class="bg-dark py-5">
+            <button onclick="cerrarSesion()" class="btn btn-secondary">Cerrar Sesión</button>
             <div class="container px-5">
                 <div class="row gx-5 justify-content-center">
                     <div class="col-lg-6">
@@ -101,7 +102,8 @@
                                 </div>
                             </div>
                             <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
-                            <div><button id="botonDES" type="submit">Encriptar</button></div>
+                            <div><button id="botonEncriptar" type="submit" class="btn btn-primary">Encriptar</button></div>
+                            <div><button id="botonLimpiar" class="btn btn-secondary">Limpiar</button></div>
                         </form>
                         
                     </div>
@@ -133,7 +135,8 @@
                                 </div>
                             </div>
                             <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
-                            <div><button id="botonDES" type="submit">Desencriptar</button></div>
+                            <div><button id="botonDES" type="submit" class="btn btn-primary">Desencriptar</button></div>
+                            <div><button id="botonLimpiar2" class="btn btn-secondary">Limpiar</button></div>
                         </form>
                         
                     </div>
@@ -145,5 +148,18 @@
         </footer>
 
         <script src="js/script.js"></script>
+        <script src="js/verificarSesion.js"></script>
+    <script>
+        verificarSesion();
+    </script>
+    <script>
+        // Función para cerrar sesión
+        function cerrarSesion() {
+            // Elimina el indicador de sesión del almacenamiento local
+            localStorage.removeItem("sesionActiva");
+            // Redirige al usuario a la página de inicio de sesión
+            window.location.href = "index.html";
+        }
+    </script>
     </body>
 </html>

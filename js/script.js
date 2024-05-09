@@ -56,3 +56,31 @@ document.addEventListener('click', function() {
         claroMensaje.value = mensajeFinal.toString(CryptoJS.enc.Utf8);
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Obtén el botón de limpiar
+    const botonLimpiar = document.getElementById('botonLimpiar');
+    
+    // Agregar un listener para el evento click del botón Limpiar
+    botonLimpiar.addEventListener('click', function(event) {
+        event.preventDefault();
+        
+        // Limpiar los textareas
+        mensajeClaro.value = "";
+        mensajeCifrado.value = "";
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Obtén el botón de limpiar
+    const botonLimpiar2 = document.getElementById('botonLimpiar2');
+
+    // Agregar un listener para el evento click del botón Limpiar
+    botonLimpiar2.addEventListener('click', function(event) {
+        event.preventDefault();
+        
+        // Limpiar los textareas
+        cifradoMensaje.value = "";
+        claroMensaje.value = "";
+    });
+});
